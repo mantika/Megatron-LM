@@ -1,6 +1,7 @@
 # Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
 
 import os
+import logging
 import sys
 import torch
 
@@ -38,7 +39,8 @@ def save_checkpoint(queue, args):
         from megatron.training.tokenizer.tokenizer import _vocab_size_with_padding
         from megatron.legacy import fused_kernels
         from megatron.core import mpu
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as ex:
+        logging.error("error importing megatron: %s", ex, exc_info=True)
         print("Unable to import Megatron, please specify the path to Megatron using --megatron-path. Exiting.")
         exit(1)
 
